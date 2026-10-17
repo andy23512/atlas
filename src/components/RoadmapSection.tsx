@@ -1,8 +1,17 @@
-import type { RoadmapSection as RoadmapSectionData } from '../data/roadmap'
+import type {
+  RoadmapItem as RoadmapItemData,
+  RoadmapSection as RoadmapSectionData,
+} from '../data/roadmap'
 import { RoadmapItem } from './RoadmapItem'
 import './RoadmapSection.css'
 
-export function RoadmapSection({ section }: { section: RoadmapSectionData }) {
+export function RoadmapSection({
+  section,
+  onOpenItem,
+}: {
+  section: RoadmapSectionData
+  onOpenItem: (item: RoadmapItemData) => void
+}) {
   return (
     <section className="roadmap-section">
       <header>
@@ -11,7 +20,7 @@ export function RoadmapSection({ section }: { section: RoadmapSectionData }) {
       </header>
       <div className="roadmap-section-items">
         {section.items.map((item) => (
-          <RoadmapItem key={item.title} item={item} />
+          <RoadmapItem key={item.title} item={item} onOpen={onOpenItem} />
         ))}
       </div>
     </section>

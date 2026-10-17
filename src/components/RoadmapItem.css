@@ -5,6 +5,40 @@
   padding: 1rem 1.25rem;
 }
 
+.roadmap-item {
+  position: relative;
+}
+
+.roadmap-item-clickable {
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.roadmap-item-clickable:hover {
+  border-color: light-dark(#1e4fd8, #8ab4ff);
+}
+
+/* Stretch the title button over the whole card; links stay above it. */
+.roadmap-item-open {
+  all: unset;
+  cursor: pointer;
+}
+
+.roadmap-item-open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5rem;
+}
+
+.roadmap-item-open:focus-visible::after {
+  outline: 2px solid light-dark(#1e4fd8, #8ab4ff);
+}
+
+.roadmap-item-clickable .roadmap-item-links {
+  position: relative;
+}
+
 .roadmap-item-heading {
   display: flex;
   align-items: baseline;

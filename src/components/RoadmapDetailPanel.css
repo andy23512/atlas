@@ -1,0 +1,119 @@
+.detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: rgb(0 0 0 / 0.45);
+  display: flex;
+  justify-content: flex-end;
+  animation: detail-fade 0.15s ease-out;
+}
+
+.detail-panel {
+  position: relative;
+  width: min(34rem, 100%);
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 3.5rem 1.75rem 2rem;
+  background: light-dark(#ffffff, #1a1a20);
+  border-left: 1px solid light-dark(#e2e2e8, #2e2e37);
+  animation: detail-slide 0.2s ease-out;
+}
+
+.detail-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  color: inherit;
+  background: light-dark(#f1f1f5, #2a2a33);
+  border: 1px solid light-dark(#e2e2e8, #2e2e37);
+  border-radius: 0.5rem;
+}
+
+.detail-panel h2 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.detail-note {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: light-dark(#6a6a75, #9a9aa8);
+}
+
+.detail-description {
+  margin: 0.75rem 0 0;
+  color: light-dark(#3f3f46, #c4c4cf);
+}
+
+.detail-block {
+  margin-top: 1.5rem;
+}
+
+.detail-block h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+}
+
+.detail-block p {
+  margin: 0 0 0.5rem;
+  font-size: 0.92rem;
+  color: light-dark(#3f3f46, #c4c4cf);
+}
+
+.detail-block ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.92rem;
+  color: light-dark(#3f3f46, #c4c4cf);
+}
+
+.detail-block li + li {
+  margin-top: 0.35rem;
+}
+
+.detail-block ul.detail-links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.detail-links li + li {
+  margin-top: 0;
+}
+
+.detail-links a {
+  display: inline-block;
+  font-size: 0.85rem;
+  text-decoration: none;
+  color: light-dark(#1e4fd8, #8ab4ff);
+  background: light-dark(#eef1ff, #1c2440);
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+}
+
+.detail-links a:hover {
+  text-decoration: underline;
+}
+
+@keyframes detail-fade {
+  from { opacity: 0; }
+}
+
+@keyframes detail-slide {
+  from { transform: translateX(2rem); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .detail-overlay,
+  .detail-panel {
+    animation: none;
+  }
+}
