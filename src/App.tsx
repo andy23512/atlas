@@ -27,6 +27,15 @@ function App() {
           />
         ))}
       </main>
+      <footer className="app-footer">
+        <a
+          href="https://github.com/andy23512/atlas"
+          target="_blank"
+          rel="noopener"
+        >
+          Source on GitHub
+        </a>
+      </footer>
       <RoadmapDetailPanel item={selected} onClose={closePanel} />
     </div>
   )
