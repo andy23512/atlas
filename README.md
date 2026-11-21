@@ -1,5 +1,7 @@
 # Atlas
 
+[![CI](https://github.com/andy23512/atlas/actions/workflows/ci.yml/badge.svg)](https://github.com/andy23512/atlas/actions/workflows/ci.yml)
+
 An unofficial learning roadmap for CharaChorder 3D input devices (CharaChorder
 One, CharaChorder Two, CCU, and Master Forge).
 
