@@ -159,6 +159,92 @@ describe('RoadmapDetailPanel', () => {
     expect(onClose).not.toHaveBeenCalled()
   })
 
+  describe('focus trap', () => {
+    const tab = (shiftKey = false) => {
+      const event = new KeyboardEvent('keydown', { key: 'Tab', shiftKey, bubbles: true, cancelable: true })
+      document.dispatchEvent(event)
+      return event
+    }
+
+    it('wraps Tab from the last link back to the close button', () => {
+      render(<RoadmapDetailPanel item={rich} onClose={vi.fn()} />)
+      const links = screen.getAllByRole('link')
+      links[links.length - 1].focus()
+      const event = tab()
+      expect(event.defaultPrevented).toBe(true)
+      expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Close' }))
+    })
+
+    it('wraps Shift+Tab from the close button to the last link', () => {
+      render(<RoadmapDetailPanel item={rich} onClose={vi.fn()} />)
+      const links = screen.getAllByRole('link')
+      expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Close' }))
+      const event = tab(true)
+      expect(event.defaultPrevented).toBe(true)
+      expect(document.activeElement).toBe(links[links.length - 1])
+    })
+
+    it('leaves Tab alone in the middle of the dialog, so the browser moves focus', () => {
+      render(<RoadmapDetailPanel item={rich} onClose={vi.fn()} />)
+      expect(tab().defaultPrevented).toBe(false)
+      screen.getAllByRole('link')[0].focus()
+      expect(tab().defaultPrevented).toBe(false)
+      expect(tab(true).defaultPrevented).toBe(false)
+    })
+
+    it('pulls focus back into the dialog when it is somewhere outside', () => {
+      const outside = document.createElement('button')
+      document.body.append(outside)
+      render(<RoadmapDetailPanel item={rich} onClose={vi.fn()} />)
+      outside.focus()
+      const event = tab()
+      expect(event.defaultPrevented).toBe(true)
+      expect(document.activeElement).toBe(screen.getByRole('button', { name: 'Close' }))
+      outside.remove()
+    })
+
+    it('keeps focus on the only focusable element when there is just the close button', () => {
+      render(<RoadmapDetailPanel item={plain} onClose={vi.fn()} />)
+      const close = screen.getByRole('button', { name: 'Close' })
+      expect(tab().defaultPrevented).toBe(true)
+      expect(document.activeElement).toBe(close)
+      expect(tab(true).defaultPrevented).toBe(true)
+      expect(document.activeElement).toBe(close)
+    })
+
+    it('stops trapping Tab once the dialog is closed', () => {
+      const { rerender } = render(<RoadmapDetailPanel item={rich} onClose={vi.fn()} />)
+      rerender(<RoadmapDetailPanel item={null} onClose={vi.fn()} />)
+      expect(tab().defaultPrevented).toBe(false)
+    })
+  })
+
+  describe('background scroll lock', () => {
+    afterEach(() => {
+      document.body.style.overflow = ''
+    })
+
+    it('locks the page scroll while open and restores it when closed', () => {
+      document.body.style.overflow = 'scroll'
+      const { rerender } = render(<RoadmapDetailPanel item={rich} onClose={vi.fn()} />)
+      expect(document.body.style.overflow).toBe('hidden')
+      rerender(<RoadmapDetailPanel item={null} onClose={vi.fn()} />)
+      expect(document.body.style.overflow).toBe('scroll')
+    })
+
+    it('restores the scroll when it is unmounted while open', () => {
+      const { unmount } = render(<RoadmapDetailPanel item={rich} onClose={vi.fn()} />)
+      unmount()
+      expect(document.body.style.overflow).toBe('')
+    })
+
+    it('does not touch the page scroll while closed', () => {
+      document.body.style.overflow = 'auto'
+      render(<RoadmapDetailPanel item={null} onClose={vi.fn()} />)
+      expect(document.body.style.overflow).toBe('auto')
+    })
+  })
+
   it('returns focus to whatever opened it when it closes', () => {
     const opener = document.createElement('button')
     document.body.append(opener)
